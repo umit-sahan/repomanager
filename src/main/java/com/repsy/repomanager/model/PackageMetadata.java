@@ -27,6 +27,6 @@ public class PackageMetadata {
     @Column(columnDefinition = "TEXT")
     private String dependenciesJson;
 
-    private String filePath; // rep dosyasının nerede saklandığını tutabiliriz
+    private String filePath;
 
 }

@@ -35,7 +35,7 @@ public class DownloadController {
         }
 
         try {
-            // Dosyayı oku (dosya sisteminden veya minio'dan)
+
             Resource resource = storageService.loadFile(fileName);
 
             String contentType = Files.probeContentType(Paths.get(fileName));

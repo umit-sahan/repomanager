@@ -29,22 +29,22 @@ public class DeployController {
             @RequestParam("meta") MultipartFile metaFile
     ) {
 
-        // 1. Meta.json dosyasını parse et
+
         try {
             Map<String, Object> metaMap = objectMapper.readValue(metaFile.getInputStream(), Map.class);
 
-            // 2. Meta bilgilerini model haline getir
+
             PackageMetadata metadata = PackageMetadata.builder()
                     .name(packageName)
                     .version(version)
                     .author((String) metaMap.get("author"))
-                    .dependenciesJson(metaFile.getInputStream().readAllBytes().toString()) // opsiyonel olarak tekrar kullanabiliriz
+                    .dependenciesJson(metaFile.getInputStream().readAllBytes().toString())
                     .build();
 
-            // 3. Dosyayı kaydet (dosya ismi: {name}-{version}.rep)
+
             String savedPath = storageService.saveFile(packageName + "-" + version + ".rep", packageFile);
 
-            // 4. Kaydedilen dosya yolunu metadata’ya ekle ve DB’ye yaz
+
             metadata.setFilePath(savedPath);
             metadataRepository.save(metadata);
 

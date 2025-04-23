@@ -1,7 +1,7 @@
 package com.repsy.repomanager.storage.filesystem;
 
 import com.repsy.repomanager.service.StorageService;
-import lombok.extern.slf4j.Slf4j; // ✅ BU IMPORT ÖNEMLİ
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -13,7 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Slf4j // ✅ BU ANOTASYON LOG DEĞİŞKENİNİ OTOMATİK EKLER
+@Slf4j
 @Service("fileSystemStorageService")
 public class FileSystemStorageService implements StorageService {
 
@@ -31,11 +31,11 @@ public class FileSystemStorageService implements StorageService {
             Path destination = storageDir.resolve(filename);
             Files.copy(file.getInputStream(), destination);
 
-            log.info("File saved at: {}", destination.toAbsolutePath()); // ✅ ARTIK HATA VERMEZ
+            log.info("File saved at: {}", destination.toAbsolutePath());
             return destination.toString();
 
         } catch (IOException e) {
-            log.error("File saving error", e); // ✅ ARTIK HATA VERMEZ
+            log.error("File saving error", e);
             throw new RuntimeException("Failed to store file " + filename, e);
         }
     }
