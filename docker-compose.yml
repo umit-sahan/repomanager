@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:15
+    container_name: repodb
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: repodb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"   # API
+      - "9001:9001"   # Web UI
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    command: server /data --console-address ":9001"
+    volumes:
+      - miniodata:/data
+
+  repomanager:
+    build: .
+    container_name: repomanager
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - minio
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/repodb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
+      STORAGE_STRATEGY: file-system
+      STORAGE_FILESYSTEM_ROOT: /data/storage
+
+    volumes:
+      - ./data:/data/storage
+
+volumes:
+  pgdata:
+  miniodata:
